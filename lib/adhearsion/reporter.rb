@@ -11,7 +11,7 @@ module Adhearsion
     init :reporter do
       config = Adhearsion.config[:reporter]
       notifier = Toadhopper.new config.api_key, :notify_host => config.url
-      Events.register_callback(:exception) do |e|
+      Events.register_callback(:exception) do |e, logger|
         response = notifier.post!(e)
         if !response.errors.empty? || !(200..299).include?(response.status.to_i)
           logger.error "Error posting exception to #{config.url}! Response code #{response.status}"
