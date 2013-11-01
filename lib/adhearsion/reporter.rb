@@ -12,7 +12,7 @@ module Adhearsion
     config :reporter do
       api_key nil,                  desc: "The Airbrake/Errbit API key"
       url     "http://airbrake.io", desc: "Base URL for notification service"
-      notifier Adhearsion::Reporter::AirbrakeNotifier, desc: "The class that will act as the notifier"
+      notifier Adhearsion::Reporter::AirbrakeNotifier, desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier and Adhearsion::Reporter::NewrelicNotifier"
       enable true, desc: "Disables notifications. Useful for testing"
       newrelic {
         license_key 'MYKEY', desc: "Your license key for New Relic"
