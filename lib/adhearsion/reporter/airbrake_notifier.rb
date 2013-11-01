@@ -4,7 +4,7 @@ require 'toadhopper'
 
 module Adhearsion
   class Reporter
-    class HoptoadNotifier
+    class AirbrakeModifier
       include Singleton
 
       def init

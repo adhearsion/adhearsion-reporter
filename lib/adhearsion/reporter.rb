@@ -4,7 +4,7 @@ require 'toadhopper'
 
 Adhearsion::Reporter = Class.new Adhearsion::Plugin
 
-require 'adhearsion/reporter/hoptoad_notifier'
+require 'adhearsion/reporter/airbrake_notifier'
 require 'adhearsion/reporter/newrelic_notifier'
 
 module Adhearsion
@@ -12,7 +12,7 @@ module Adhearsion
     config :reporter do
       api_key nil,                  desc: "The Airbrake/Errbit API key"
       url     "http://airbrake.io", desc: "Base URL for notification service"
-      notifier Adhearsion::Reporter::HoptoadNotifier, desc: "The class that will act as the notifier"
+      notifier Adhearsion::Reporter::AirbrakeModifier, desc: "The class that will act as the notifier"
       enable true, desc: "Disables notifications. Useful for testing"
       newrelic {
         license_key 'MYKEY', desc: "Your license key for New Relic"
