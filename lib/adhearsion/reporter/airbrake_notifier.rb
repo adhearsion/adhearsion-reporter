@@ -4,7 +4,7 @@ require 'toadhopper'
 
 module Adhearsion
   class Reporter
-    class AirbrakeModifier
+    class AirbrakeNotifier
       include Singleton
 
       def init

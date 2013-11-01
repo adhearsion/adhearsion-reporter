@@ -33,9 +33,9 @@ describe Adhearsion::Reporter do
     end
   end
 
-  context "with a AirbrakeModifier" do
+  context "with a AirbrakeNotifier" do
     before(:each) do
-      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::AirbrakeModifier
+      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::AirbrakeNotifier
     end
 
     it "should initialize correctly" do
