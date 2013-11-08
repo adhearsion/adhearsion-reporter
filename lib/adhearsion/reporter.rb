@@ -14,7 +14,7 @@ module Adhearsion
       url     "http://airbrake.io", desc: "Base URL for notification service"
       notifier Adhearsion::Reporter::AirbrakeNotifier,
         desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier and Adhearsion::Reporter::NewrelicNotifier",
-        transform: lambda { |v| const_get(v.to_s) }
+        transform: Proc.new { |v| const_get(v.to_s) }
       enable true, desc: "Disables notifications. Useful for testing"
       newrelic {
         license_key 'MYKEY', desc: "Your license key for New Relic"
