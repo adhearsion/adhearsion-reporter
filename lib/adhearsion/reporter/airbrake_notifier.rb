@@ -12,7 +12,7 @@ module Adhearsion
       end
 
       def notify(ex)
-        response = @notifier.post!(ex) if Reporter.config.enable
+        response = @notifier.post!(ex, options) if Reporter.config.enable
         if !response.errors.empty? || !(200..299).include?(response.status.to_i)
           logger.error "Error posting exception to #{Reporter.config.url}! Response code #{response.status}"
           response.errors.each do |error|
@@ -20,6 +20,12 @@ module Adhearsion
           end
           logger.warn "Original exception message: #{ex.message}"
         end
+      end
+
+    private
+
+      def options
+        {framework_env: Adhearsion.config.platform.environment}
       end
     end
   end
