@@ -47,7 +47,7 @@ describe Adhearsion::Reporter do
       let(:mock_notifier) { double 'notifier' }
       let(:event_error)   { ExceptionClass.new }
 
-      before { Toadhopper.should_receive(:new).and_return(mock_notifier) }
+      before { Toadhopper.should_receive(:new).at_least(:once).and_return(mock_notifier) }
 
       after do
         Adhearsion::Plugin.init_plugins
@@ -55,14 +55,24 @@ describe Adhearsion::Reporter do
       end
 
       it "should notify Airbrake" do
-        mock_notifier.should_receive(:post!).at_least(:once).with(event_error, framework_env: :test).and_return(double('response').as_null_object)
+        mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :production)).and_return(double('response').as_null_object)
       end
 
       context "with an environment set" do
         before { Adhearsion.config.platform.environment = :foo }
 
         it "notifies airbrake with that environment" do
-          mock_notifier.should_receive(:post!).at_least(:once).with(event_error, framework_env: :foo).and_return(double('response').as_null_object)
+          mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :foo)).and_return(double('response').as_null_object)
+        end
+      end
+
+      context "in excluded environments" do
+        before do
+          Adhearsion.config.platform.environment = :development
+          Adhearsion::Plugin.init_plugins
+        end
+        it "should not report errors for excluded environments" do
+          mock_notifier.should_not_receive(:post!)
         end
       end
     end

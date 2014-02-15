@@ -1,7 +1,7 @@
 require 'adhearsion'
 require 'adhearsion/reporter'
 
-ENV['AHN_ENV'] = 'test'
+ENV['AHN_ENV'] = 'production'
 
 RSpec.configure do |config|
   config.color_enabled = true

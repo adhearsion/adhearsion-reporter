@@ -9,10 +9,14 @@ module Adhearsion
 
       def init
         @notifier = Toadhopper.new Reporter.config.api_key, :notify_host => Reporter.config.url
+        @options = {
+          framework_env: Adhearsion.config.platform.environment,
+        }
       end
 
       def notify(ex)
-        response = @notifier.post!(ex, options) if Reporter.config.enable
+        return unless should_post?
+        response = @notifier.post!(ex, @options)
         if !response.errors.empty? || !(200..299).include?(response.status.to_i)
           logger.error "Error posting exception to #{Reporter.config.url}! Response code #{response.status}"
           response.errors.each do |error|
@@ -23,9 +27,9 @@ module Adhearsion
       end
 
     private
-
-      def options
-        {framework_env: Adhearsion.config.platform.environment}
+      def should_post?
+        Reporter.config.enable &&
+          !Reporter.config.excluded_environments.include?(@options[:framework_env])
       end
     end
   end
