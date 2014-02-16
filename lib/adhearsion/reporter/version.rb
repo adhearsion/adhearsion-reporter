@@ -1,3 +1,3 @@
 module Adhearsion
-  REPORTER_VERSION = '2.0.1'
+  REPORTER_VERSION = '2.0.2'
 end
