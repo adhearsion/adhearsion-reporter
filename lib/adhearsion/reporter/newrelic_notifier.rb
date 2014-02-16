@@ -18,6 +18,10 @@ module Adhearsion
         logger.warn "Original exception message: #{e.message}"
         raise
       end
+
+      def self.method_missing(m, *args, &block)
+        instance.send m, *args, &block
+      end
     end
   end
 end

@@ -1,3 +1,5 @@
 module Adhearsion
-  REPORTER_VERSION = '2.0.2'
+  class Reporter
+    VERSION = '2.1.0'
+  end
 end

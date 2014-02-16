@@ -1,6 +1,8 @@
 # encoding: utf-8
 
 require 'toadhopper'
+require 'socket'
+require 'adhearsion/reporter/version'
 
 module Adhearsion
   class Reporter
@@ -12,8 +14,8 @@ module Adhearsion
         @options = {
           framework_env: Adhearsion.config.platform.environment,
           notifier_name: 'adhearsion-reporter',
-          notifier_version: Adhearsion::REPORTER_VERSION,
           project_root: Adhearsion.config.platform[:root]
+          notifier_version: Adhearsion::Reporter::VERSION,
         }
       end
 
@@ -27,6 +29,10 @@ module Adhearsion
           end
           logger.warn "Original exception message: #{ex.message}"
         end
+      end
+
+      def self.method_missing(m, *args, &block)
+        instance.send m, *args, &block
       end
 
     private

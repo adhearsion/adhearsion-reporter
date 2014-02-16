@@ -15,6 +15,10 @@ describe Adhearsion::Reporter do
       def notify(ex)
         @notified = ex
       end
+
+      def self.method_missing(m, *args, &block)
+        instance.send m, *args, &block
+      end
     end
 
     before(:each) do
