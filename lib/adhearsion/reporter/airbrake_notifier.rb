@@ -14,8 +14,12 @@ module Adhearsion
         @options = {
           framework_env: Adhearsion.config.platform.environment,
           notifier_name: 'adhearsion-reporter',
-          project_root: Adhearsion.config.platform[:root]
           notifier_version: Adhearsion::Reporter::VERSION,
+          project_root: Adhearsion.config.platform[:root],
+          environment: {
+            'HOSTNAME' => Socket.gethostname,
+            'AHN_VERSION' => Adhearsion::VERSION
+          }
         }
       end
 
