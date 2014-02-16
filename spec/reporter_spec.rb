@@ -46,6 +46,7 @@ describe Adhearsion::Reporter do
     context "exceptions" do
       let(:mock_notifier) { double 'notifier' }
       let(:event_error)   { ExceptionClass.new }
+      let(:response)      { double('response').as_null_object }
 
       before { Toadhopper.should_receive(:new).at_least(:once).and_return(mock_notifier) }
 
@@ -55,14 +56,14 @@ describe Adhearsion::Reporter do
       end
 
       it "should notify Airbrake" do
-        mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :production)).and_return(double('response').as_null_object)
+        mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :production)).and_return(response)
       end
 
       context "with an environment set" do
         before { Adhearsion.config.platform.environment = :foo }
 
         it "notifies airbrake with that environment" do
-          mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :foo)).and_return(double('response').as_null_object)
+          mock_notifier.should_receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :foo)).and_return(response)
         end
       end
 
