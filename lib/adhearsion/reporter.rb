@@ -21,7 +21,7 @@ module Adhearsion
         notifier Adhearsion::Reporter::AirbrakeNotifier,
           desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier and Adhearsion::Reporter::NewrelicNotifier",
           transform: Proc.new { |v| const_get(v.to_s) }
-        enable true, desc: "Disables notifications. Useful for testing"
+        enable true, desc: "Whether to send notifications - set to false to disable all notifications globally (useful for testing)"
         excluded_environments [:development, :test], desc: "Skip reporting errors for the listed environments (comma delimited when set by environment variable", transform: Proc.new { |v| names = v.split(','); names = names.each.map &:to_sym }
         newrelic {
           license_key 'MYKEY', desc: "Your license key for New Relic"
