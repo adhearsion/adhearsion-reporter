@@ -5,7 +5,6 @@ require 'socket'
 ENV['AHN_ENV'] = 'production'
 
 RSpec.configure do |config|
-  config.color_enabled = true
   config.tty = true
 
   config.filter_run :focus => true
