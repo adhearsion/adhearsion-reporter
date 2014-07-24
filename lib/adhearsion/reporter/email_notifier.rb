@@ -13,7 +13,7 @@ module Adhearsion
 
       def notify(ex)
         Pony.mail({
-          subject: email_subject,
+          subject: email_subject(ex),
           body: exception_text(ex)
         })
       end
@@ -23,8 +23,8 @@ module Adhearsion
       end
 
     private
-      def email_subject
-        "[#{Adhearsion::Reporter.config.app_name}] Exception"
+      def email_subject(exception)
+        "[#{Adhearsion::Reporter.config.app_name}] Exception: #{exception.class} (#{exception.message})"
       end
 
       def exception_text(exception)

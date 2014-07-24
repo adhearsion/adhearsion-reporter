@@ -19,7 +19,7 @@ module Adhearsion
       config :reporter do
         api_key nil,                  desc: "The Airbrake/Errbit API key"
         url     "http://airbrake.io", desc: "Base URL for notification service"
-        app_name "Reporter", desc: "Application name, used for reporting"
+        app_name "Adhearsion", desc: "Application name, used for reporting"
         notifier Adhearsion::Reporter::AirbrakeNotifier,
           desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier and Adhearsion::Reporter::NewrelicNotifier",
           transform: Proc.new { |v| const_get(v.to_s) }
@@ -32,7 +32,7 @@ module Adhearsion
           developer_mode false, desc: "More information but very high overhead in memory"
           log_level 'info', desc: "The newrelic's agent log level"
         }
-        email Hash.new(via: :sendmail), desc: "Used to configure the email notifier"
+        email Hash.new(via: :sendmail), desc: "Used to configure the email notifier, with options accepted by the pony (https://github.com/benprew/pony) gem"
       end
 
       init :reporter do

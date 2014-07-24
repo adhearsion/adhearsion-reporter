@@ -141,7 +141,7 @@ describe Adhearsion::Reporter do
 
       Timecop.freeze(time_freeze) do
         expect(Pony).to receive(:mail).at_least(:once).with({
-          subject: "[#{Adhearsion::Reporter.config.app_name}] Exception",
+          subject: "[#{Adhearsion::Reporter.config.app_name}] Exception: ExceptionClass (#{error_message})",
           body: "#{Adhearsion::Reporter.config.app_name} reported an exception at #{time_freeze.to_s}\n\nExceptionClass (#{error_message}):\n#{event_error.backtrace.join("\n")}\n\n"
         })
 
