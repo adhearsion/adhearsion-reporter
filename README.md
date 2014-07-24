@@ -31,6 +31,21 @@ Adhearsion.config do |config|
 end
 ```
 
+Email Notifier
+--------------
+Email notification uses the [pony](https://github.com/benprew/pony) gem.
+The `email` configuration key is passed to Pony on initialization using `Pony.options`.
+
+To set the destination address and the sender address, for example, you can use:
+
+```ruby
+Adhearsion::Reporter.config.email = {
+  via: :sendmail,
+  to: 'recv@domain.ext',
+  from: 'send@domain.ext'
+}
+```
+
 Copyright
 ---------
 

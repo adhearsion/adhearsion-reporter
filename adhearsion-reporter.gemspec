@@ -28,4 +28,5 @@ EOF
   s.add_runtime_dependency "pony", ["~> 1.10"]
 
   s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'timecop'
 end

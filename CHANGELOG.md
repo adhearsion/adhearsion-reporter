@@ -1,4 +1,5 @@
 # develop
+  * EmailReporter added
 
 # v2.1.0
   * Bugfix: record the correct environment with each notification

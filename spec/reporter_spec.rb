@@ -105,6 +105,49 @@ describe Adhearsion::Reporter do
   end
 
   context 'with an EmailNotifier' do
+    let(:email_options) do
+      {
+        via: :sendmail,
+        to: 'recv@domain.ext',
+        from: 'send@domain.ext'
+      }
+    end
 
+    let(:time_freeze) { Time.parse("2014-07-24 17:30:00") }
+
+    let(:fake_backtrace) do
+      [
+        '1: foo',
+        '2: bar'
+      ]
+    end
+
+    let(:error_message) { "Something bad" }
+
+    before(:each) do
+      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::EmailNotifier
+      Adhearsion::Reporter.config.email = email_options
+    end
+
+    it "should initialize correctly" do
+      Adhearsion::Plugin.init_plugins
+      expect(Pony.options).to be(email_options)
+    end
+
+    it "should notify via email" do
+
+      event_error = ExceptionClass.new error_message
+      event_error.set_backtrace(fake_backtrace)
+
+      Timecop.freeze(time_freeze) do
+        expect(Pony).to receive(:mail).at_least(:once).with({
+          subject: "[#{Adhearsion::Reporter.config.app_name}] Exception",
+          body: "#{Adhearsion::Reporter.config.app_name} reported an exception at #{time_freeze.to_s}\n\nExceptionClass (#{error_message}):\n#{event_error.backtrace.join("\n")}\n\n"
+        })
+
+        Adhearsion::Plugin.init_plugins
+        Adhearsion::Events.trigger_immediately :exception, event_error
+      end
+    end
   end
 end
