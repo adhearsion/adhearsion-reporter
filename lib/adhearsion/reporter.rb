@@ -5,6 +5,7 @@ require 'toadhopper'
 require 'adhearsion'
 require 'adhearsion/reporter/airbrake_notifier'
 require 'adhearsion/reporter/newrelic_notifier'
+require 'adhearsion/reporter/email_notifier'
 
 module Adhearsion
   class Reporter
