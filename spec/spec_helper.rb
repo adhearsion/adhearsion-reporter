@@ -1,6 +1,7 @@
 require 'adhearsion'
 require 'adhearsion/reporter'
 require 'socket'
+require 'timecop'
 
 ENV['AHN_ENV'] = 'production'
 
