@@ -30,9 +30,10 @@ module Adhearsion
       end
 
       def exception_text(exception)
+        backtrace = exception.backtrace || ["EMPTY BACKTRACE"]
         "#{Adhearsion::Reporter.config.app_name} reported an exception at #{Time.now.to_s}" +
         "\n\n#{exception.class} (#{exception.message}):\n" +
-        exception.backtrace.join("\n") +
+        backtrace.join("\n") +
         "\n\n"
       end
 

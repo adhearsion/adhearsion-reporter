@@ -1,4 +1,5 @@
 # develop
+  * Handle case where exception is passed with no backtrace in EmailReporter
   * Add notifiers array to allow multiple notifiers
   * EmailReporter added
 
