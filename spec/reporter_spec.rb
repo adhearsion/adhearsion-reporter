@@ -108,8 +108,7 @@ describe Adhearsion::Reporter do
     let(:email_options) do
       {
         via: :sendmail,
-        to: 'recv@domain.ext',
-        from: 'send@domain.ext'
+        to: 'recv@domain.ext'
       }
     end
 
@@ -139,14 +138,61 @@ describe Adhearsion::Reporter do
       event_error = ExceptionClass.new error_message
       event_error.set_backtrace(fake_backtrace)
 
+      hostname = Socket.gethostname
+      environment = Adhearsion.config.platform.environment.to_s.upcase
+
       Timecop.freeze(time_freeze) do
         expect(Pony).to receive(:mail).at_least(:once).with({
-          subject: "[#{Adhearsion::Reporter.config.app_name}] Exception: ExceptionClass (#{error_message})",
-          body: "#{Adhearsion::Reporter.config.app_name} reported an exception at #{time_freeze.to_s}\n\nExceptionClass (#{error_message}):\n#{event_error.backtrace.join("\n")}\n\n"
+          subject: "[#{Adhearsion::Reporter.config.app_name}-#{environment}] Exception: ExceptionClass (#{error_message})",
+          body: "#{Adhearsion::Reporter.config.app_name} reported an exception at #{time_freeze.to_s}\n\nExceptionClass (#{error_message}):\n#{event_error.backtrace.join("\n")}\n\n",
+          from: hostname
         })
 
         Adhearsion::Plugin.init_plugins
         Adhearsion::Events.trigger_immediately :exception, event_error
+      end
+    end
+  end
+
+  context "with multiple notifiers" do
+
+    class BaseNotifier
+      include Singleton
+
+      attr_reader :initialized, :notified
+
+      def init
+        @initialized = true
+      end
+
+      def notify(ex)
+        @notified = ex
+      end
+
+      def self.method_missing(m, *args, &block)
+        instance.send m, *args, &block
+      end
+    end
+
+    class MockNotifier < BaseNotifier; end
+    class AnotherMockNotifier < BaseNotifier; end
+
+    before(:each) do
+      Adhearsion::Events.clear_handlers(:exception)
+      Adhearsion::Reporter::config.notifiers = [MockNotifier, AnotherMockNotifier]
+      Adhearsion::Plugin.init_plugins
+      Adhearsion::Events.trigger_immediately :exception, ExceptionClass.new
+    end
+
+    it "calls init on each of the notifier instances" do
+      Adhearsion::Reporter::config.notifiers.each do |notifier|
+        expect(notifier.instance.initialized).to be(true)
+      end
+    end
+
+    it "logs an exception in each of the registered notifiers" do
+      Adhearsion::Reporter::config.notifiers.each do |notifier|
+        expect(notifier.instance.notified.class).to eq(ExceptionClass)
       end
     end
   end
