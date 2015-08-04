@@ -1,4 +1,5 @@
 # develop
+  * Add notifiers array to allow multiple notifiers
   * EmailReporter added
 
 # v2.1.0
