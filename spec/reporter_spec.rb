@@ -154,6 +154,43 @@ describe Adhearsion::Reporter do
     end
   end
 
+  context "with a SentryNotifier" do
+    let(:sentry_options) do
+      {
+        "dsn" => 'https://123abc:def456@app.getsentry.com/98765',
+        "environments" => ['production', 'staging'],
+        "current_environment" => 'production'
+      }
+    end
+
+    before(:each) do
+      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::SentryNotifier
+      Adhearsion::Reporter.config.sentry = sentry_options
+    end
+
+    it "should initialize correctly" do
+      Adhearsion::Plugin.init_plugins
+
+      config = Raven.configuration
+      sentry_options.each do |k, v|
+        if k == "dsn"   #There is no getter for this attribute, so we have to get it through it components
+          expect("#{config.scheme}://#{config.public_key}:#{config.secret_key}@#{config.host}/#{config.path}#{config.project_id}").to eq v
+        else
+          expect(Raven.configuration.send("#{k}")).to eq v
+        end
+      end
+    end
+
+    it "should notify Sentry" do
+      expect(Raven).to receive(:configure)
+      event_error = ExceptionClass.new
+      expect(Raven).to receive(:capture_exception).at_least(:once).with(event_error)
+
+      Adhearsion::Plugin.init_plugins
+      Adhearsion::Events.trigger_immediately :exception, event_error
+    end
+  end
+
   context "with multiple notifiers" do
 
     class BaseNotifier
