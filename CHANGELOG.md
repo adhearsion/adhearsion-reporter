@@ -2,6 +2,7 @@
   * Handle case where exception is passed with no backtrace in EmailReporter
   * Add notifiers array to allow multiple notifiers
   * EmailReporter added
+  * SentryReporter added
 
 # v2.1.0
   * Bugfix: record the correct environment with each notification
