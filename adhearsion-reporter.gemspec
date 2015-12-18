@@ -23,7 +23,7 @@ EOF
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "adhearsion", ["~> 3.0"]
+  s.add_runtime_dependency "adhearsion", ["~> 3.0.0.beta"]
   s.add_runtime_dependency "toadhopper", [">= 1.3.0"]
   s.add_runtime_dependency "newrelic_rpm", ["~> 3.6"]
   s.add_runtime_dependency "pony", ["~> 1.10"]
