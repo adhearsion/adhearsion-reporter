@@ -38,7 +38,7 @@ module Adhearsion
       end
 
       def environment
-        Adhearsion.config.platform.environment.to_s.upcase
+        Adhearsion.environment.to_s.upcase
       end
 
       def hostname

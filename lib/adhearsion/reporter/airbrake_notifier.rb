@@ -12,10 +12,10 @@ module Adhearsion
       def init
         @notifier = Toadhopper.new Reporter.config.api_key, :notify_host => Reporter.config.url
         @options = {
-          framework_env: Adhearsion.config.platform.environment,
+          framework_env: Adhearsion.environment,
           notifier_name: 'adhearsion-reporter',
           notifier_version: Adhearsion::Reporter::VERSION,
-          project_root: Adhearsion.config.platform[:root],
+          project_root: Adhearsion.root,
           environment: {
             'HOSTNAME' => Socket.gethostname,
             'AHN_VERSION' => Adhearsion::VERSION

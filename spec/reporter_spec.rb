@@ -69,7 +69,7 @@ describe Adhearsion::Reporter do
       end
 
       context "with an environment set" do
-        before { Adhearsion.config.platform.environment = :foo }
+        before { Adhearsion.environment = :foo }
 
         it "notifies airbrake with that environment" do
           expect(mock_notifier).to receive(:post!).at_least(:once).with(event_error, hash_including(framework_env: :foo)).and_return(response)
@@ -78,7 +78,7 @@ describe Adhearsion::Reporter do
 
       context "in excluded environments" do
         before do
-          Adhearsion.config.platform.environment = :development
+          Adhearsion.environment = :development
           Adhearsion::Plugin.init_plugins
         end
         it "should not report errors for excluded environments" do
@@ -144,7 +144,7 @@ describe Adhearsion::Reporter do
       event_error.set_backtrace(fake_backtrace)
 
       hostname = Socket.gethostname
-      environment = Adhearsion.config.platform.environment.to_s.upcase
+      environment = Adhearsion.environment.to_s.upcase
 
       Timecop.freeze(time_freeze) do
         expect(Pony).to receive(:mail).at_least(:once).with({
