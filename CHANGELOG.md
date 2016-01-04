@@ -1,4 +1,6 @@
 # develop
+  * New notifiers: EmailNotifier and SentryNotifier
+  * Allow configuring multiple notifiers as a list. The `notifier` option is deprecated in favour of `notifiers`, which can be used the same for a single notifier.
 
 # v2.1.0
   * Bugfix: record the correct environment with each notification

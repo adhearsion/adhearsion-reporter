@@ -1,11 +1,11 @@
 require 'adhearsion'
 require 'adhearsion/reporter'
 require 'socket'
+require 'timecop'
 
 ENV['AHN_ENV'] = 'production'
 
 RSpec.configure do |config|
-  config.color_enabled = true
   config.tty = true
 
   config.filter_run :focus => true
