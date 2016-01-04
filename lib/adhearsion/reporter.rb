@@ -46,7 +46,7 @@ module Adhearsion
 
       init :reporter do
         # If a collection of multiple notifiers is not set, fall back to the individual option for BC.
-        # TODO: Remove the `notifier` option in v2.0
+        # TODO: Remove the `notifier` option in v3.0
         if Reporter.config.notifiers.empty?
           Reporter.config.notifiers = [Reporter.config.notifier]
         end
