@@ -22,7 +22,7 @@ module Adhearsion
         url     "http://airbrake.io", desc: "Base URL for notification service"
         app_name "Adhearsion", desc: "Application name, used for reporting"
         notifier Adhearsion::Reporter::AirbrakeNotifier,
-          desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier, Adhearsion::Reporter::NewrelicNotifier, and Adhearsion::Reporter::SentryNotifier",
+          desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier, Adhearsion::Reporter::NewrelicNotifier, and Adhearsion::Reporter::SentryNotifier. This option is deprecated; please specify in `notifiers`.",
           transform: Proc.new { |v| const_get(v.to_s) }
         notifiers [],
           desc: "Collection of classes that will act as notifiers",
