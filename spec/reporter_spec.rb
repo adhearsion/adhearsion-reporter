@@ -50,7 +50,7 @@ describe Adhearsion::Reporter do
     context "exceptions" do
       let(:mock_notifier) { double 'notifier' }
       let(:event_error)   { ExceptionClass.new }
-      let(:response)      { double('response').as_null_object }
+      let(:response)      { double('response', status: '200').as_null_object }
 
       before { expect(Toadhopper).to receive(:new).at_least(:once).and_return(mock_notifier) }
 
