@@ -5,7 +5,6 @@ describe Adhearsion::Reporter do
   ExceptionClass = Class.new StandardError
 
   before do
-    Adhearsion::Reporter.config.notifier = nil
     Adhearsion::Reporter.config.notifiers = []
   end
 
@@ -27,24 +26,24 @@ describe Adhearsion::Reporter do
     end
 
     before(:each) do
-      Adhearsion::Reporter.config.notifier = DummyNotifier
+      Adhearsion::Reporter.config.notifiers = [DummyNotifier]
       Adhearsion::Plugin.init_plugins
       Adhearsion::Events.trigger_immediately :exception, ExceptionClass.new
     end
 
     it "calls init on the notifier instance" do
-      expect(Adhearsion::Reporter.config.notifier.instance.initialized).to be(true)
+      expect(DummyNotifier.instance.initialized).to be(true)
     end
 
     it "logs an exception event" do
       sleep 0.25
-      expect(Adhearsion::Reporter.config.notifier.instance.notified.class).to eq(ExceptionClass)
+      expect(DummyNotifier.instance.notified.class).to eq(ExceptionClass)
     end
   end
 
   context "with a AirbrakeNotifier" do
     before(:each) do
-      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::AirbrakeNotifier
+      Adhearsion::Reporter.config.notifiers = [Adhearsion::Reporter::AirbrakeNotifier]
     end
 
     it "should initialize correctly" do
@@ -90,7 +89,7 @@ describe Adhearsion::Reporter do
 
   context "with a NewrelicNotifier" do
     before(:each) do
-      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::NewrelicNotifier
+      Adhearsion::Reporter.config.notifiers = [Adhearsion::Reporter::NewrelicNotifier]
     end
 
     it "should initialize correctly" do
@@ -129,7 +128,7 @@ describe Adhearsion::Reporter do
     let(:error_message) { "Something bad" }
 
     before(:each) do
-      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::EmailNotifier
+      Adhearsion::Reporter.config.notifiers = [Adhearsion::Reporter::EmailNotifier]
       Adhearsion::Reporter.config.email = email_options
     end
 
@@ -169,7 +168,7 @@ describe Adhearsion::Reporter do
     end
 
     before(:each) do
-      Adhearsion::Reporter.config.notifier = Adhearsion::Reporter::SentryNotifier
+      Adhearsion::Reporter.config.notifiers = [Adhearsion::Reporter::SentryNotifier]
       Adhearsion::Reporter.config.sentry = sentry_options
     end
 

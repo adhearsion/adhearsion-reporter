@@ -21,11 +21,8 @@ module Adhearsion
         api_key nil,                  desc: "The Airbrake/Errbit API key"
         url     "http://airbrake.io", desc: "Base URL for notification service"
         app_name "Adhearsion", desc: "Application name, used for reporting"
-        notifier Adhearsion::Reporter::AirbrakeNotifier,
-          desc: "The class that will act as the notifier. Built-in classes are Adhearsion::Reporter::AirbrakeNotifier, Adhearsion::Reporter::NewrelicNotifier, and Adhearsion::Reporter::SentryNotifier. This option is deprecated; please specify in `notifiers`.",
-          transform: Proc.new { |v| const_get(v.to_s) }
-        notifiers [],
-          desc: "Collection of classes that will act as notifiers",
+        notifiers [Adhearsion::Reporter::AirbrakeNotifier],
+          desc: "Collection of classes that will act as notifiers (comma-separated). Built-in classes are Adhearsion::Reporter::AirbrakeNotifier, Adhearsion::Reporter::NewrelicNotifier, and Adhearsion::Reporter::SentryNotifier.",
           transform: Proc.new { |v| v.split(',').map { |n| n.to_s.constantize } }
         enable true, desc: "Whether to send notifications - set to false to disable all notifications globally (useful for testing)"
         excluded_environments [:development, :test], desc: "Skip reporting errors for the listed environments (comma delimited when set by environment variable", transform: Proc.new { |v| names = v.split(','); names = names.each.map &:to_sym }
@@ -45,12 +42,6 @@ module Adhearsion
       end
 
       init :reporter do
-        # If a collection of multiple notifiers is not set, fall back to the individual option for BC.
-        # TODO: Remove the `notifier` option in v3.0
-        if Reporter.config.notifiers.empty?
-          Reporter.config.notifiers = [Reporter.config.notifier]
-        end
-
         Reporter.config.notifiers.each do |notifier|
           notifier.init
           Events.register_callback(:exception) do |e, logger|
