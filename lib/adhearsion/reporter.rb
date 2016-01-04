@@ -42,25 +42,19 @@ module Adhearsion
           current_environment 'production', 'The current execution environment'
           environments ['production'], 'The environments for which Sentry is active'
         }
-
       end
 
       init :reporter do
-        # If the notifiers is empty (the default), then use whatever content
-        # was in the "notifier" property. This will allow the default, or an
-        # explicitly set value to be used. Not that notifiers has been set, then
-        # the notifier will be ignored.
+        # If a collection of multiple notifiers is not set, fall back to the individual option for BC.
+        # TODO: Remove the `notifier` option in v2.0
         if Reporter.config.notifiers.empty?
-          Reporter.config.notifier.init
+          Reporter.config.notifiers = [Reporter.config.notifier]
+        end
+
+        Reporter.config.notifiers.each do |notifier|
+          notifier.init
           Events.register_callback(:exception) do |e, logger|
-            Reporter.config.notifier.instance.notify e
-          end
-        else
-          Reporter.config.notifiers.each do |notifier|
-            notifier.init
-            Events.register_callback(:exception) do |e, logger|
-              notifier.notify e
-            end
+            notifier.notify e
           end
         end
       end

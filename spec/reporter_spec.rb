@@ -4,6 +4,11 @@ describe Adhearsion::Reporter do
   EventClass = Class.new
   ExceptionClass = Class.new StandardError
 
+  before do
+    Adhearsion::Reporter.config.notifier = nil
+    Adhearsion::Reporter.config.notifiers = []
+  end
+
   context "with a DummyNotifier" do
     class DummyNotifier
       include Singleton
