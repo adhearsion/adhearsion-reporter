@@ -49,5 +49,5 @@ Adhearsion::Reporter.config.email = {
 Copyright
 ---------
 
-Copyright (C) 2012 Adhearsion Foundation Inc.
+Copyright (C) 2012-2015 Adhearsion Foundation Inc.
 Released under the MIT License - Check [License file](https://github.com/adhearsion/adhearsion-reporter/blob/master/LICENSE)
