@@ -1,4 +1,6 @@
 # develop
+
+# v2.3.0
   * Allow reporting of custom environment to Airbrake
 
 # v2.2.0
