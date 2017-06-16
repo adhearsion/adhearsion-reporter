@@ -28,6 +28,9 @@ module Adhearsion
           desc: "Collection of classes that will act as notifiers",
           transform: Proc.new { |v| v.split(',').map { |n| n.to_s.constantize } }
         enable true, desc: "Whether to send notifications - set to false to disable all notifications globally (useful for testing)"
+        env nil,
+          desc: "Custom environment for error reporting. May be different from the application environment.",
+          transform: Proc.new { |v| v.to_sym }
         excluded_environments [:development, :test], desc: "Skip reporting errors for the listed environments (comma delimited when set by environment variable", transform: Proc.new { |v| names = v.split(','); names = names.each.map &:to_sym }
         newrelic {
           license_key 'MYKEY', desc: "Your license key for New Relic"

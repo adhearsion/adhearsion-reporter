@@ -1,4 +1,9 @@
 # develop
+
+# v2.3.0
+  * Allow reporting of custom environment to Airbrake
+
+# v2.2.0
   * New notifiers: EmailNotifier and SentryNotifier
   * Allow configuring multiple notifiers as a list. The `notifier` option is deprecated in favour of `notifiers`, which can be used the same for a single notifier.
 
