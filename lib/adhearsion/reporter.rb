@@ -43,7 +43,9 @@ module Adhearsion
         sentry {
           dsn 'https://<user>:<password>@app.getsentry.com/<application>', desc: "The SENTRY_DSN, or client key that has been created in Sentry"
           current_environment 'production', 'The current execution environment'
-          environments ['production'], 'The environments for which Sentry is active'
+          environments ['production'],
+            desc: 'The environments for which Sentry is active',
+            transform: Proc.new { |v| v.split(',').map { |n| n.to_s } }
         }
       end
 

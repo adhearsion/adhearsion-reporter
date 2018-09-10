@@ -9,7 +9,7 @@ module Adhearsion
 
       def init
         Raven.configure do |config|
-          Reporter.config.sentry.each do |k,v|
+          Reporter.config.sentry.to_hash.each do |k,v|
             config.send("#{k}=", v) unless v.nil?
           end
         end
