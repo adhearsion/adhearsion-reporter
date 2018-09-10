@@ -1,5 +1,8 @@
 # develop
 
+# v2.3.1
+  * Fix Sentry reporting
+
 # v2.3.0
   * Allow reporting of custom environment to Airbrake
 
